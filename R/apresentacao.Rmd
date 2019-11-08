@@ -22,9 +22,9 @@ library(xaringanthemer)
 duo(
   primary_color = "#1F4257",
   secondary_color = "#F97B64",
-  header_font_google = google_font("Josefin Sans"),
-  text_font_google   = google_font("Montserrat", "300", "300i"),
-  code_font_google   = google_font("Droid Mono")
+  header_font_google = google_font("Arvo"),
+  text_font_google   = google_font("Open Sans", "400", "400i"),
+  code_font_google   = google_font("Fira Code")
 )
 ```
 

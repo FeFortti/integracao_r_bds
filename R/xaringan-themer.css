@@ -16,18 +16,18 @@
  *    - remarkjs wiki: https://github.com/gnab/remark/wiki
  *
  * ------------------------------------------------------- */
-@import url(https://fonts.googleapis.com/css?family=Montserrat:300,300i);
-@import url(https://fonts.googleapis.com/css?family=Josefin+Sans);
-@import url(https://fonts.googleapis.com/css?family=Droid+Mono);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,400i);
+@import url(https://fonts.googleapis.com/css?family=Arvo);
+@import url(https://fonts.googleapis.com/css?family=Fira+Code);
 
 
 body {
-  font-family: Montserrat, 'Palatino Linotype', 'Book Antiqua', Palatino, 'Microsoft YaHei', 'Songti SC', serif;
-  font-weight: 300;
+  font-family: Open Sans, 'Palatino Linotype', 'Book Antiqua', Palatino, 'Microsoft YaHei', 'Songti SC', serif;
+  font-weight: 400;
   color: #FEFDFD;
 }
 h1, h2, h3 {
-  font-family: Josefin Sans;
+  font-family: Arvo;
   font-weight: normal;
   color: #F97B64;
 }
@@ -49,7 +49,7 @@ h1, h2, h3 {
     font-size: 35px;
 }
 .remark-code, .remark-inline-code {
-  font-family: Droid Mono, 'Lucida Console', Monaco, monospace;
+  font-family: Fira Code, 'Lucida Console', Monaco, monospace;
 }
 .remark-code {
   font-size: 0.9em;
