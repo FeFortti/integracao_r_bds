@@ -30,88 +30,220 @@ class: inverse, center, middle
 # Motivação
 
 ---
-# Hello World
+# O Problema
 
-* Somente BDs 
-Limitacções dos BDs relacionais **no tocante** de cálculos estatísticos.
-Exemplos: moda, percentil, modelagem.
-* Somente R
-Não é suficiente, pois tem BD em memória local, o que não é viável para grandes
-conjuntos de dados e, também não é interessantes quando os dados a serem 
-utilizados já estão em um banco de dados.
+BDs relacionais são limitados em relação à programação estatística
+  
+  - Moda, percentil, modelagem são tarefas difíceis para SGBDs
+  
+Programas em R/Python nem sempre são viáveis com muitos dados
+  
+  - O que cabe em disco não necessariamente cabe na memória
+  
+  - Se os dados já estão em um BD, por que trazê-los para memória?
 
 ---
 class: inverse, center, middle
 # Soluções
 
 ---
-# Implementação da ferramenta estatística dentro dos SGBDs relacionais
+# Solução 1
 
-* Limitações:
-- Nem todos os tipos de BDs apresentam essa funcionalidade implementada.
-- Vendedores dos SGBDs precisam criar e atualizar as funções, pois a 
-funcionalidade estará alocada dentro do banco.
-- Os SGBDs que apresentam essa alternativa nem sempre são open source.
-- Exemplo: SQL server ("run R code"); não é open source.
-*- Pesquisar exemplos de BDs que não tem (Postgres?)*
+Implementação da ferramenta estatística dentro dos SGBDs relacionais
+
+Limitações:
+
+  - Nem todo SGBD apresenta essa funcionalidade (Postgres por exemplo)
+
+  - Vendedores dos SGBDs precisam implementar a funcionalidade (o que pode
+  custar caro e/ou demorar para ser feito)
+
+  - Dificilmente a implementação será *open source*
+
+```sql
+EXEC sp_execute_external_script
+  @language = N'R'
+  ,@script = N'
+    res <-quantile(InputDataSet$Ages);
+    print(res);'
+  ,@input_data_1 = N'
+    SELECT Ages = DATEDIFF(YEAR,[BirthDate],GETDATE())
+    FROM [AdventureWorksDW2014].[dbo].[DimCustomer];';
+```
+
 
 ---
-# Conexao do software estatístico aos SGBDs relacionais
-* MELIOR alternativa!
+# Solução 2
 
-### QUAL SOFTWARE ESTATÍSTICO UTILIZAR?
+Conexao do software estatístico aos SGBDs relacionais
 
-* R!
-* Por que o R?
-- Linguagem estatistica mais amplamente adotada.
-- Open source.
-- Comunidade ativa.
+Por que usar o R como principal linguagem estatística?
+
+  - Linguagem estatistica mais amplamente adotada
+
+  - Open source
+
+  - Comunidade ativa
+  
+```r
+con_postgres <- RPostgres::dbConnect(
+  RPostgres::Postgres(),
+  dbname = "my_database",
+  host = "localhost", port = 54320,
+  user = "postgres", pwd
+)
+```
 
 ---
 class: inverse, center, middle
 # Dbplyr
 
 ---
+# Diagrama
+
+```{r, echo=FALSE}
+knitr::include_graphics("figures/diagrama.png")
+```
+
+---
 # BD
 
-- BDs suportados (precisam ter backend criado e aberto)
+Qualquer SGBD pode ser suportado desde que um *backend* seja criado
 
----
+  - Aproveita-se do fato de que todo SGBD tem suporte para conexões externas
+  
 # DBI
 
-- Pacote de backend do R
-- Fornece uma interface comum que permite ao dplyr trabalhar com muitos bancos de dados diferentes usando o mesmo código; ou seja, é uma interface padronizada entre BD e R. 
-- Permite que qualquer pessoa crie um backend desde que respeite o padrao/a 
-sintaxe do DBI.
-- Envio de SQL <-> Recebimento de dados
+*Database Interface* para o R
+
+  - Fornece uma especificação de interface que permite qualquer um criar novos
+  *backends* para um BD
+  
+  - Padronização das funções possibilita que se construam pacotes genéricos
+  para lidar com os dados de uma conexão
 
 ---
-# Backends no R
 
-- São específicos do BD ao qual se deseja conectar
+# Backends
 
-*Traduz R em SQL <-> Recebe os dados e os transforma em uma estrutura de dados que o R consegue entender (dataframe) e, assim, conseguimos aplicar as funções dos pacotes do R sobre os dados.*
-*Estou com dúvida. Colocamos isso no backend, mas acho que seria no dbplyr, não?*
+São bibliotecas específicas que permitem conectar o R com um SGBD
+
+  - Funções de leitura e escrita de tabelas através de uma conexão
+  
+  - Permite enviar *queries* e receber dados do BD
+  
+  - `RMariaDB`, `RPostgres`,  `RSQLite`, `bigrquery`, etc...
+  
+  - Permite ao `dplyr` trabalhar com múltiplas fontes de dados dados diferentes
+  usando o mesmo código
 
 ---
-# dbplyr
+# Dbplyr
 
-O objetivo do dbplyr é, de forma automática, gerar um código SQL a partir de um código em R que utilize as funções do pacote dplyr. No entanto, SQL é uma linguagem muito grande e dbplyr não faz tudo. Ele se concentra nas instruções SELECT.
+Um pacote para tradução de código `dplyr` em código SQL
+
+  - De forma automática, cosegue gerar um código SQL a partir de um código em R
+  
+  - Capaz de transformar verbos do `dplyr` em *queries* completos
+  
+  - Não consegue traduzir qualquer código, mas ajuda bastante
+  
+  - Permite receber resultados parciais do SGBD e traduzí-los em uma resposta
+  interpretável pelo R
+
+```r
+dbplyr::translate_sql(x ^ 2L)
+#> <SQL> POWER(`x`, 2)
+
+dbplyr::translate_sql(log(x, 10))
+#> <SQL> LOG(10.0, `x`)
+```
 
 ---
-# dbplyr
+# Dplyr
 
-- Pacote do R
-- Por que o dplyr?
-  + Transformacao sintática em bases de dados.
-  + Pipelines, o que permite que cada linha delimite uma ação, como se fosse
-  uma receita
-  de bolo.
-  + Operadores infixos, o que permite que se saiba exatamente a ordem das
-  operações)
-  + Metaprogramacao, o que garante um código mais limpo.
-  + Quasí quotations.
-- Pacote mais famoso e mais comum por conta das vantagens mencionadas.
+Uma gramática para manupulação de dados
+
+  - Transformacao sintática em bases de dados
+  
+  - Pipelines, o que permite que cada linha delimite uma ação, como se fosse uma
+  receita de bolo
+  
+  - Operadores infixos, o que permite que se saiba exatamente a ordem das
+  operações
+  
+  - Metaprogramacao, o que garante código mais limpo
+  
+  - *Quasi-quotations*
+  
+  - Pacote mais famoso e mais comum por conta das vantagens mencionadas.
+
+---
+class: inverse, center, middle
+# Exemplos
+
+---
+# Dplyr
+
+```r
+cnes %>%
+  select(def_atividad, def_turno_at, starts_with("mun_")) %>%
+  filter(def_atividad == "Unidade SEM atividade de Ensino") %>%
+  mutate(
+    so_um_turno = ifelse(grepl("SOMENTE", def_turno_at), 1, 0),
+    localizacao = ifelse(mun_CAPITAL == "S", "CAPITAL", "INTERIOR")
+  ) %>%
+  group_by(localizacao) %>%
+  summarise(f_so_um_turno = sum(so_um_turno)*100/n())
+  
+#> # A tibble: 2 x 2
+#>   localizacao f_so_um_turno
+#>   <chr>               <dbl>
+#> 1 CAPITAL              1.10
+#> 2 INTERIOR             1.80
+```
+
+---
+# Dbplyr
+
+```r
+*tbl(con, "cnes") %>%
+  select(def_atividad, def_turno_at, starts_with("mun_")) %>%
+  filter(def_atividad == "Unidade SEM atividade de Ensino") %>%
+  mutate(
+    so_um_turno = ifelse(grepl("SOMENTE", def_turno_at), 1, 0),
+    localizacao = ifelse(mun_CAPITAL == "S", "CAPITAL", "INTERIOR")
+  ) %>%
+  group_by(localizacao) %>%
+  summarise(f_so_um_turno = sum(so_um_turno)*100/n()) %>%
+* collect()
+
+#> # A tibble: 2 x 2
+#>   localizacao f_so_um_turno
+#>   <chr>               <dbl>
+#> 1 CAPITAL              1.10
+#> 2 INTERIOR             1.80
+```
+
+---
+# Tradução
+
+```sql
+SELECT "localizacao", SUM("so_um_turno") * 100.0 / COUNT(*) AS "f_so_um_turno"
+FROM (SELECT "def_atividad", "def_turno_at", "mun_MUNNOME", "mun_MUNNOMEX", "mun_AMAZONIA", "mun_FRONTEIRA", "mun_CAPITAL", "mun_MSAUDCOD", "mun_RSAUDCOD", "mun_CSAUDCOD", "mun_LATITUDE", "mun_LONGITUDE", "mun_ALTITUDE", "mun_AREA", "mun_codigo_adotado", "mun_coordenadas", CASE WHEN ("def_turno_at" like 'SOMENTE') THEN (1.0) WHEN NOT("def_turno_at" like 'SOMENTE') THEN (0.0) END AS "so_um_turno", CASE WHEN ("mun_CAPITAL" = 'S') THEN ('CAPITAL') WHEN NOT("mun_CAPITAL" = 'S') THEN ('INTERIOR') END AS "localizacao"
+FROM (SELECT *
+FROM (SELECT "def_atividad", "def_turno_at", "mun_MUNNOME", "mun_MUNNOMEX", "mun_AMAZONIA", "mun_FRONTEIRA", "mun_CAPITAL", "mun_MSAUDCOD", "mun_RSAUDCOD", "mun_CSAUDCOD", "mun_LATITUDE", "mun_LONGITUDE", "mun_ALTITUDE", "mun_AREA", "mun_codigo_adotado", "mun_coordenadas"
+FROM "cnes") "dbplyr_1033"
+WHERE ("def_atividad" = 'Unidade SEM atividade de Ensino')) "dbplyr_1034") "dbplyr_1035"
+GROUP BY "localizacao"
+```
+
+```sql
+HashAggregate  (cost=4091.28..4091.33 rows=2 width=64)
+  Group Key: CASE WHEN (cnes."mun_CAPITAL" = 'S'::text) THEN 'CAPITAL'::text WHEN (cnes."mun_CAPITAL" <> 'S'::text) THEN 'INTERIOR'::text ELSE NULL::text END
+  ->  Seq Scan on cnes  (cost=0.00..3810.18 rows=22488 width=77)
+        Filter: (def_atividad = 'Unidade SEM atividade de Ensino'::text)
+```
 
 ---
 class: inverse, center, middle
