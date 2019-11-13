@@ -175,30 +175,34 @@ entre R e SGDBRs
   através de uma conexão
   
   - Exemplos:
-    - [`RMariaDB`]() 
     - [`RPostgres`]()  
     - [`RSQLite`]()
+    - [`RMariaDB`]() 
     - [`bigrquery`]()
     
 ---
 # BDRs, DBI, *Backends* dos SGBDRs
 
-<<<<<<< HEAD
-Os argumentos para [`DBI::dbConnect()`]() variam de BDR para BDR, mas o [primeiro argumento é sempre o *backend*]() do BDR:
+Os argumentos para [`DBI::dbConnect()`]() variam de BDR para BDR, mas o
+[primeiro argumento é sempre o *backend*]() do BDR:
 
   - [`RSQLite::SQLite()`]() para `RSQLite`
-  - [`RMySQL::MySQL()`]() para `RMySQL` (abandonado)
   - [`RPostgreSQL::PostgreSQL()`]() para `RPostgreSQL`
-  - [`RMariaDB::MariaDB()`]() para `RMariaDB`
+  - [`RMySQL::MySQL()`]() para `RMySQL` (abandonado)
+  - [`RMariaDB::MariaDB()`]() para `RMariaDB`*
   - [`bigrquery::bigquery()`]() para `BigQuery`
+  
+######*Funciona de backend para MariaDB e MySQL; substituiu o pacote `RMySQL`
 
-`SQLite` precisa de outro argumento: o caminho para o BDR. Porém, a [maioria dos BDRs]() não [está]() em um arquivo, mas sim [em outro servidor](). Isso faz com que, na prática, o [código seja semelhante a]():
+`SQLite` precisa de outro argumento: o caminho para o BDR. Porém, a [maioria
+dos BDRs]() não [está]() em um arquivo, mas sim [em outro servidor](). Isso faz
+com que, na prática, o [código seja semelhante a]():
 
 ```r
 con <- RPostgres::dbConnect(
   RPostgres::Postgres(), dbname = "alunos",
   host = "database.ime.com", port = 54320,
-  user = "fefortti"
+  user = "professorMAC5861"
   password = rstudioapi::askForPassword("database_password")
 )
 ```
@@ -329,6 +333,8 @@ HashAggregate  (cost=4091.28..4091.33 rows=2 width=64)
 
 # Desempenho
 
+[`microbenchmark::microbenchmark()`]()
+
 ```r
 # Unit: milliseconds
 #                 expr        min     median        max
@@ -339,6 +345,57 @@ HashAggregate  (cost=4091.28..4091.33 rows=2 width=64)
 #     turno(con_maria)  172.39715  181.23544  188.76618
 #        turno(con_bq) 4231.28270 4247.64543 4975.46140
 ```
+
+---
+
+# Referências
+
+[Srivastava & Ngo, 2014](https://www.researchgate.net/publication/228710145_Statistical_Databases)
+
+[Wickham, 2019](https://dbplyr.tidyverse.org/articles/dbplyr.html)
+
+[Databases](https://web.archive.org/web/20161121000310/http://cran.r-project.org:80/web/packages/dplyr/vignettes/databases.html)
+
+[Executing R code in SQL Server](https://www.mssqltips.com/sqlservertip/4126/sql-server-2016-r-services-executing-r-code-in-sql-server/)
+
+[R, Databases & SQL](https://rdbsql.rsquaredacademy.com/dbplyr.html)
+
+[SQL databases and R](https://datacarpentry.org/R-ecology-lesson/05-r-and-databases.html)
+
+[Write advanced R functions with SQL Server Machine Learning Services](https://docs.microsoft.com/en-us/sql/advanced-analytics/tutorials/quickstart-r-functions?view=sql-server-ver15)
+
+[R and Data – When Should we Use Relational Databases?](https://cran.r-project.org/web/packages/dbplyr/dbplyr.pdf)
+
+[Database Queries With R](https://db.rstudio.com/getting-started/database-queries/)
+
+[nodbi: the NoSQL Database Connector](https://www.r-bloggers.com/nodbi-the-nosql-database-connector/)
+
+[Advanced R](https://adv-r.hadley.nz/quasiquotation.html)
+
+---
+# Referências
+
+[Implementing a new backend: DBI](https://dbi.r-dbi.org/articles/backend)
+
+[DBI](https://dbi.r-dbi.org/)
+
+[Database basics - dplyr and DBI](https://shiny.rstudio.com/articles/overview.html)
+
+[Introduction to dbplyr](https://dbplyr.tidyverse.org/articles/dbplyr.html)
+
+[Function translation](https://dbplyr.tidyverse.org/articles/translation-function.html)
+
+[Verb translation](https://dbplyr.tidyverse.org/articles/translation-verb.html)
+
+[Databases using dplyr](https://db.rstudio.com/dplyr/)
+
+[Introduction to dplyr](https://dplyr.tidyverse.org/articles/dplyr.html)
+
+[Programming with dplyr](https://dplyr.tidyverse.org/articles/programming.html)
+
+[PostgreSQL 12.0 Documentation](https://www.postgresql.org/docs/12/index.html)
+
+[RMariaDB](https://rmariadb.r-dbi.org/)
 
 ---
 class: inverse, center, middle
