@@ -86,10 +86,6 @@ EXEC sp_execute_external_script
     SELECT Ages = DATEDIFF(YEAR,[BirthDate],GETDATE())
     FROM [AdventureWorksDW2014].[dbo].[DimCustomer];';
 ```
-```{r, eval = FALSE, include = FALSE}
-#calculate simple quantiles
-stats::quantile(InputDataSet$Ages)
-```
 
 ---
 # Solução 2
@@ -146,15 +142,18 @@ knitr::include_graphics("figures/logos_bds_relac3.png")
 ---
 # DBI
 
-[Interface de BDs]() consistente para comunicação entre R e SGDBRs
+É uma biblioteca que fornece uma [interface]() consistente para comunicação
+entre R e SGDBRs
   
   - Permite que o R envie comandos para os bancos de dados, 
   [independentemente do SGBDR utilizado]()
   
   - [Padronização das funções]() possibilita a construção de pacotes genéricos
   para lidar com os dados de uma conexão, facilitando:
+  
     - A criação e implementação dos pacotes (necessidade de menos decisões
     arbitrárias) 
+    
     - A manipulação dos usuários (padrão familiar)
   
   - [Fornece uma especificação de interface]() que permite qualquer um criar
@@ -182,21 +181,21 @@ knitr::include_graphics("figures/logos_bds_relac3.png")
 ---
 # BDRs, DBI, *Backends* dos SGBDRs
 
-Os argumentos para [`DBI :: dbConnect ()`]() variam de BDR para BDR, mas o [primeiro argumento é sempre o *backend*]() do BDR:
+Os argumentos para [`DBI::dbConnect()`]() variam de BDR para BDR, mas o [primeiro argumento é sempre o *backend*]() do BDR:
 
-  - [`RSQLite :: SQLite ()`]() para `RSQLite`
-  - [`RMySQL :: MySQL ()`]() para `RMySQL`
-  - [`RPostgreSQL :: PostgreSQL ()`]() para `RPostgreSQL`
-  - [`RMariaDB :: MariaDB ()`]() para `RMariaDB`
-  - [`bigrquery :: bigquery ()`]() para `BigQuery`
+  - [`RSQLite::SQLite()`]() para `RSQLite`
+  - [`RMySQL::MySQL()`]() para `RMySQL`
+  - [`RPostgreSQL::PostgreSQL()`]() para `RPostgreSQL`
+  - [`RMariaDB::MariaDB()`]() para `RMariaDB`
+  - [`bigrquery::bigquery()`]() para `BigQuery`
 
 `SQLite` precisa de outro argumento: o caminho para o BDR. Porém, a [maioria dos BDRs]() não [está]() em um arquivo, mas sim [em outro servidor](). Isso faz com que, na prática, o [código seja semelhante a]():
 
-```{r, eval = FALSE}
-con <- DBI::dbConnect(
-  RMySQL::MySQL(),
-  host = "database.ime.com",
-  user = "fernanda_fortti",
+```r
+con <- RPostgres::dbConnect(
+  RPostgres::Postgres(), dbname = "alunos",
+  host = "database.ime.com", port = 54320,
+  user = "fefortti"
   password = rstudioapi::askForPassword("database_password")
 )
 ```
@@ -218,7 +217,7 @@ Pacote do R para [tradução de código `dplyr` em código SQL]() e [tradução 
   
   - Não consegue traduzir qualquer código, mas ajuda bastante
 
-```{r, eval = FALSE}
+```r
 dbplyr::translate_sql(x ^ 2L)
 #> <SQL> POWER(`x`, 2)
 
@@ -245,23 +244,9 @@ Pacote do R com gramática para [manipulação de dados]()
   - [Metaprogramação](), o que garante um código mais limpo
   
   - [*Quasi-quotations*](), o que garante a escrita de funções confiáveis que
-  reduzem a duplicação/duplicidade no código
+  reduzem a redundância no código
   
-  - [Pacote do R mais famoso e mais utilizado](), graças às vantagens
-  mencionadas
-
----
-# Dplyr
-
-Operações [*lazy*]()
-
-  - [Ao trabalhar com BDRs](), o `dplyr` tenta ser o mais preguiçoso possível
-  
-  - Atrasa a execução de qualquer trabalho até o último momento possível: 
-  reúne tudo o que você deseja fazer e [envia ao BDR em uma única etapa]().
-  
-  - Nunca puxa [dados para o R](), a menos que você os [solicite]()
-  [explicitamente]() (`print()`, `collect()`).
+  - [Uma das bibliotecas mais utilizadas](), graças às vantagens mencionadas
 
 ---
 class: inverse, center, middle
@@ -291,12 +276,11 @@ cnes %>%
 ---
 # Dplyr + Dbplyr
 
-[`dplyr::tbl ()`]()
-
-[`dplyr::collect ()`]()
+O processo é [*lazy*](), nunca puxa [dados para o R](), a menos que você os
+[solicite]() [explicitamente]() com [`dplyr::collect()`]().
 
 ```r
-* tbl(con, "cnes") %>%
+*tbl(con, "cnes") %>%
   select(def_atividad, def_turno_at, starts_with("mun_")) %>%
   filter(def_atividad == "Unidade SEM atividade de Ensino") %>%
   mutate(
@@ -317,9 +301,9 @@ cnes %>%
 ---
 # Tradução
 
-[`dplyr::show_query ()`]()
+[`dplyr::show_query()`]()
 
-[`dplyr::explain ()`]()
+[`dplyr::explain()`]()
 
 ```sql
 SELECT "localizacao", SUM("so_um_turno") * 100.0 / COUNT(*) AS "f_so_um_turno"
@@ -340,16 +324,22 @@ HashAggregate  (cost=4091.28..4091.33 rows=2 width=64)
 
 ---
 
-# Desempenho?
+# Desempenho
 
-
----
-# Referências
-
+```r
+# Unit: milliseconds
+#                 expr        min     median        max
+#              turno()   25.87095   25.92416   126.6529
+#  turno(con_postgres)  151.11062  153.43344  178.16157
+#    turno(con_sqlite)   75.66695   76.58116   83.03558
+#     turno(con_mysql)  188.36329  191.83665  200.08846
+#     turno(con_maria)  172.39715  181.23544  188.76618
+#        turno(con_bq) 4231.28270 4247.64543 4975.46140
+```
 
 ---
 class: inverse, center, middle
-# Obrigado(a)!
+# Obrigada(o)!
 
 ```{r image_grobs, fig.show = "hold", echo = FALSE, fig.align = "default", out.width="10%"}
 knitr::include_graphics("figures/emo_smilling_eyes.png")
