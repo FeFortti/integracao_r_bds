@@ -6,11 +6,12 @@ date: '<br>13 de novembro de 2019<br>'
 encoding: "UTF-8"
 output:
   xaringan::moon_reader:
-  lib_dir: libs
-  nature:
-    highlightStyle: github
-    highlightLines: true
-    countIncrementalSlides: false
+    css: ["default", "default-fonts"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
 ---
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
@@ -22,21 +23,21 @@ class: inverse, center, middle
 ---
 # O Problema
 
-- Bancos de dados [(BDs) relacionais]() são [limitados]() no que diz respeito à
-[programação estatística]()
+- Bancos de Dados Relacionais [(BDRs)]() são [limitados]() no que diz respeito à [programação estatística]()
   
-  - Moda, percentil, modelagem e cálculos estatísticos são [tarefas difíceis]() 
-  [para]() Sistemas Gerenciadores de Bancos de Dados [(SGBDs)]().
+  - Moda, percentil, modelagem e cálculos estatísticos mais sofisicados são 
+  [tarefas difíceis para]() Sistemas Gerenciadores de Bancos de Dados
+  Relacionais [(SGBDRs)]()
   
     >*While basic aggregation operations (SUM, AVG) are part of SQL, there is 
-    no support for other commonly used operations like variance and co-variance.
+    no support for other commonly used operations like variance and covariance.
     Such computations, as well as more advanced ones like regression and 
     principal component analysis, are usually performed using statistical 
     packages and libraries.*
-                                    (Srivastava & Ngo, 2014)
+                                        (Srivastava & Ngo, 2014)
 
 ```{r, echo=FALSE, fig.align = "center", tidy.opts = list(blank = FALSE)}
-knitr::include_graphics("figures/logos_bds_relac.png")
+knitr::include_graphics("figures/logos_bds_relac2.png")
 ```
 
 ---
@@ -50,10 +51,10 @@ knitr::include_graphics("figures/logos_bds_relac.png")
   
     >*If your data fits in memory there is no advantage to putting it in a 
     database: it will only be slower and more frustrating.*
-                                    (Wickham, 2019)
+                                                (Wickham, 2019)
                                           
 ```{r, echo = FALSE, fig.align = "center", tidy.opts = list(blank = FALSE)}
-knitr::include_graphics("figures/logos_soft_estat.png")
+knitr::include_graphics("figures/logos_soft_estat2.png")
 ```
 
 ---
@@ -63,13 +64,13 @@ class: inverse, center, middle
 ---
 # Solução 1
 
-[Implementação]() da ferramenta estatística [dentro dos SGBDs relacionais]()
+[Implementação]() da ferramenta estatística [dentro dos SGBDRs]()
 
 - [Limitações]()
 
-  - Nem todo SGBD apresenta essa [funcionalidade]() (Postgres, p. ex.)
+  - Nem todo SGBDR apresenta essa [funcionalidade]() (Postgres, p. ex.)
 
-  - Vendedores dos SGBDs precisam implementar a funcionalidade (o que pode
+  - Vendedores dos SGBDRs precisam implementar a funcionalidade (o que pode
   custar [caro]() e/ou [demorar]() para ser feito)
 
   - [Dificilmente]() a implementação será [*open source*]()
@@ -93,9 +94,9 @@ stats::quantile(InputDataSet$Ages)
 ---
 # Solução 2
 
-[Conexão]() do software estatístico [aos SGBDs relacionais]()
+[Conexão]() do software estatístico [aos SGBDRs]()
 
-- Por que usar o [**R**]() como principal [linguagem estatística]()?
+- Por que usar o [**R**]() como [software]() e principal [linguagem estatística]()?
 
    - Linguagem estatística mais [amplamente adotada]()
    
@@ -125,30 +126,30 @@ class: inverse
 # Diagrama
 
 ```{r, echo = FALSE, fig.align = "center"}
-knitr::include_graphics("figures/diagrama_novo2.png")
+knitr::include_graphics("figures/diagrama2.png")
 ```
 
 ---
-# BDs
+# BDRs
 
-[Qualquer SGBD]() pode ser suportado [desde que um *backend* seja criado]()
+[Qualquer SGBDR]() pode ser suportado [desde que um *backend* seja criado]()
 
-  - Aproveita-se do fato de que todo SGBD tem suporte para conexões externas
+  - Aproveita-se do fato de que todo SGBDR tem suporte para conexões externas
 
 
 
 ```{r, echo = FALSE, fig.align = "center"}
-knitr::include_graphics("figures/logos_bds_relac2.png")
+knitr::include_graphics("figures/logos_bds_relac3.png")
 ```
 
 
 ---
 # DBI
 
-[Interface de BDs]() consistente para comunicação entre R e SGDBs
+[Interface de BDs]() consistente para comunicação entre R e SGDBRs
   
   - Permite que o R envie comandos para os bancos de dados, 
-  [independentemente do SGBD utilizado]()
+  [independentemente do SGBDR utilizado]()
   
   - [Padronização das funções]() possibilita a construção de pacotes genéricos
   para lidar com os dados de uma conexão, facilitando:
@@ -157,16 +158,17 @@ knitr::include_graphics("figures/logos_bds_relac2.png")
     - A manipulação dos usuários (padrão familiar)
   
   - [Fornece uma especificação de interface]() que permite qualquer um criar
-  novos *backends* para um BD
+  novos *backends* para um BDR
   
 ---
-# *Backends* dos SGBDs relacionais
+# *Backends* dos SGBDRs
 
-[Bibliotecas específicas]() que permitem a conexão entre o R e SGBDs relacionais
+[Bibliotecas específicas]() que permitem a conexão entre o R e SGBDRs
   
-  - Permite o envio de *queries* e recebimento de dados do BD
+  - Permite o envio de *queries* e recebimento de dados do BDR
   
-  - Permite ao [`dplyr`]() trabalhar com [múltiplas fontes de dados usando o]() [mesmo código]()
+  - Permite ao [`dplyr`]() trabalhar com [múltiplas fontes de dados usando o]()
+  [mesmo código]()
     
   - Funções de leitura (`dbReadTable`) e escrita (`dbWriteTable`) de tabelas
   através de uma conexão
@@ -178,17 +180,17 @@ knitr::include_graphics("figures/logos_bds_relac2.png")
     - [`bigrquery`]()
     
 ---
-# BD, DBI, *Backends* dos SGBDs relacionais
+# BDRs, DBI, *Backends* dos SGBDRs
 
-Os argumentos para [`DBI :: dbConnect ()`]() variam de BD para BD, mas o [primeiro argumento é sempre o *backend*]() do BD:
+Os argumentos para [`DBI :: dbConnect ()`]() variam de BDR para BDR, mas o [primeiro argumento é sempre o *backend*]() do BDR:
 
   - [`RSQLite :: SQLite ()`]() para `RSQLite`
   - [`RMySQL :: MySQL ()`]() para `RMySQL`
   - [`RPostgreSQL :: PostgreSQL ()`]() para `RPostgreSQL`
+  - [`RMariaDB :: MariaDB ()`]() para `RMariaDB`
   - [`bigrquery :: bigquery ()`]() para `BigQuery`
-  - [`odbc :: odbc ()`]() para `odbc`
 
-`SQLite` precisa de outro argumento: o caminho para o banco de dados. Porém, a [maioria dos BDs]() não [está]() em um arquivo, mas sim [em outro servidor](). Isso faz com que, na prática, o [código seja semelhante a]():
+`SQLite` precisa de outro argumento: o caminho para o BDR. Porém, a [maioria dos BDRs]() não [está]() em um arquivo, mas sim [em outro servidor](). Isso faz com que, na prática, o [código seja semelhante a]():
 
 ```{r, eval = FALSE}
 con <- DBI::dbConnect(
@@ -203,7 +205,7 @@ con <- DBI::dbConnect(
 # Dbplyr
 
 Pacote do R para [tradução de código `dplyr` em código SQL]() e [tradução da]()
-[resposta do banco de dados em um *R data frame*]()  
+[resposta do BDR em um *R data frame*]()  
 
   - [De forma automática](), consegue gerar um código em SQL a partir de um
   código em R
@@ -211,7 +213,7 @@ Pacote do R para [tradução de código `dplyr` em código SQL]() e [tradução 
   - Capaz de transformar verbos do pacote do R `dplyr` em *queries* SQL
   completas (atua, portanto, como *backend* do `dplyr`)
   
-  - Permite [receber resultados parciais dos SGBDs relacionais]() e traduzí-los
+  - Permite [receber resultados parciais dos SGBDRs]() e traduzí-los
   em uma resposta interpretável pelo R
   
   - Não consegue traduzir qualquer código, mas ajuda bastante
@@ -230,8 +232,7 @@ dbplyr::translate_sql(log(x, 10))
 Pacote do R com gramática para [manipulação de dados]()
 
   - Fornece um [conjunto consistente de verbos]() que ajudam a resolver os
-  desafios
-  mais comuns de manipulação de dados
+  desafios mais comuns de manipulação de dados
 
   - [Transformação sintática]() sobre tabelas
   
@@ -254,11 +255,10 @@ Pacote do R com gramática para [manipulação de dados]()
 
 Operações [*lazy*]()
 
-  - [Ao trabalhar com bancos de dados](), o `dplyr` tenta ser o mais preguiçoso
-  possível
+  - [Ao trabalhar com BDRs](), o `dplyr` tenta ser o mais preguiçoso possível
   
   - Atrasa a execução de qualquer trabalho até o último momento possível: 
-  reúne tudo o que você deseja fazer e [envia ao BD em uma única etapa]().
+  reúne tudo o que você deseja fazer e [envia ao BDR em uma única etapa]().
   
   - Nunca puxa [dados para o R](), a menos que você os [solicite]()
   [explicitamente]() (`print()`, `collect()`).
