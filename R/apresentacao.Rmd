@@ -346,13 +346,12 @@ HashAggregate  (cost=4091.28..4091.33 rows=2 width=64)
 # Referências
 
 
-
 ---
 class: inverse, center, middle
 # Obrigado(a)!
 
 ```{r image_grobs, fig.show = "hold", echo = FALSE, fig.align = "default", out.width="10%"}
-knitr::include_graphics("figures/smilling_eyes.png")
-knitr::include_graphics("figures/nerd_face.png")
+knitr::include_graphics("figures/emo_smilling_eyes.png")
+knitr::include_graphics("figures/emo_nerd_face.png")
 ```
 
