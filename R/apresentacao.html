@@ -26,7 +26,8 @@ class: inverse, center, middle
 ---
 # O Problema
 
-- Bancos de Dados Relacionais [(BDRs)]() são [limitados]() no que diz respeito à [programação estatística]()
+- Bancos de Dados Relacionais [(BDRs)]() são [limitados]() no que diz respeito
+à [programação estatística]()
   
   - Moda, percentil, modelagem e cálculos estatísticos mais sofisicados são 
   [tarefas difíceis para]() Sistemas Gerenciadores de Bancos de Dados
@@ -92,7 +93,8 @@ EXEC sp_execute_external_script
 
 [Conexão]() do software estatístico [aos SGBDRs]()
 
-- Por que usar o [**R**]() como [software]() e principal [linguagem estatística]()?
+- Por que usar o [**R**]() como [software]() e principal [linguagem
+estatística]()?
 
    - Linguagem estatística mais [amplamente adotada]()
    
@@ -173,22 +175,24 @@ class: inverse
 ---
 # BDRs, DBI, *Backends* dos SGBDRs
 
-Os argumentos para [`DBI :: dbConnect ()`]() variam de BDR para BDR, mas o [primeiro argumento é sempre o *backend*]() do BDR:
+Os argumentos para [`DBI :: dbConnect ()`]() variam de BDR para BDR, mas o
+[primeiro argumento é sempre o *backend*]() do BDR:
 
   - [`RSQLite :: SQLite ()`]() para `RSQLite`
-  - [`RMySQL :: MySQL ()`]() para `RMySQL`
   - [`RPostgreSQL :: PostgreSQL ()`]() para `RPostgreSQL`
-  - [`RMariaDB :: MariaDB ()`]() para `RMariaDB`
+  - [`RMariaDB :: MariaDB ()`]() para `RMariaDB` * 
   - [`bigrquery :: bigquery ()`]() para `BigQuery`
+######*Funciona de backend para MariaDB e MySQL; substituiu o pacote `RMySQL`
 
-`SQLite` precisa de outro argumento: o caminho para o BDR. Porém, a [maioria dos BDRs]() não [está]() em um arquivo, mas sim [em outro servidor](). Isso faz com que, na prática, o [código seja semelhante a]():
-
+`SQLite` precisa de outro argumento: caminho para o BDR (`path = ":dbname:"`).
+Porém, a [maioria dos BDRs]() não [está]() em um arquivo, mas sim [em outro]()
+[servidor](). Isso faz com que o [código seja semelhante a]():
 
 ```r
 con &lt;- DBI::dbConnect(
   RMySQL::MySQL(),
   host = "database.ime.com",
-  user = "fernanda_fortti",
+  user = "MAC5861",
   password = rstudioapi::askForPassword("database_password")
 )
 ```
