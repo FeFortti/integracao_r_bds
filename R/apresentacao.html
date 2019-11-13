@@ -3,19 +3,20 @@
   <head>
     <title>BDs Relacionais &amp; Programação Estatística</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <meta name="author" content=" Caio Lente   Fernanda Fortti" />
+    <link href="apresentacao_files/remark-css/default.css" rel="stylesheet" />
+    <link href="apresentacao_files/remark-css/default-fonts.css" rel="stylesheet" />
   </head>
   <body>
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
 # BDs Relacionais &amp; Programação Estatística
-### Caio Lente      Fernanda Fortti
+## <br>Disciplina MAC5861 - IME/USP<br>
+### <br>Caio Lente <br> Fernanda Fortti<br>
+### <br>13 de novembro de 2019<br>
 
 ---
-
-
-
 
 
 
@@ -25,15 +26,35 @@ class: inverse, center, middle
 ---
 # O Problema
 
-BDs relacionais são limitados em relação à programação estatística
+- [Bancos de Dados (BDs) relacionais]() são [limitados]() no que diz respeito à 
+[programação estatística]()
   
-  - Moda, percentil, modelagem são tarefas difíceis para SGBDs
+  - Moda, percentil, modelagem e cálculos estatísticos são tarefas difíceis 
+  para Sistemas Gerenciadores de Bancos de Dados (SGBDs).
   
-Programas em R/Python nem sempre são viáveis com muitos dados
+    &gt;*While basic aggregation operations (SUM, AVG) are part of SQL, there is 
+    no support for other commonly used operations like variance and co-variance.
+    Such computations, as well as more advanced ones like regression and 
+    principal component analysis, are usually performedusing statistical 
+    packages and libraries.*
+                                            (Srivastava &amp; Ngo, 2014)
+
+&lt;img src="figures/logos_bds_relac.png" style="display: block; margin: auto;" /&gt;
+
+---
+# O Problema
+  
+- [Ferramentas estatísticas]() nem sempre são viáveis com [muitos dados]()
   
   - O que cabe em disco não necessariamente cabe na memória
   
   - Se os dados já estão em um BD, por que trazê-los para memória?
+  
+    &gt;*If your data fits in memory there is no advantage to putting it in a 
+    database: it will only be slower and more frustrating.*
+                                                    (Wickham, 2019)
+                                          
+&lt;img src="figures/logos_soft_estat.png" style="display: block; margin: auto;" /&gt;
 
 ---
 class: inverse, center, middle
@@ -42,22 +63,23 @@ class: inverse, center, middle
 ---
 # Solução 1
 
-Implementação da ferramenta estatística dentro dos SGBDs relacionais
+[Implementação]() da ferramenta estatística dentro dos SGBDs relacionais
 
-Limitações:
+- [Limitações]()
 
-  - Nem todo SGBD apresenta essa funcionalidade (Postgres por exemplo)
+  - Nem todo SGBD apresenta essa [funcionalidade]() (Postgres, p. ex.)
 
   - Vendedores dos SGBDs precisam implementar a funcionalidade (o que pode
-  custar caro e/ou demorar para ser feito)
+  custar [caro]() e/ou [demorar]() para ser feito)
 
-  - Dificilmente a implementação será *open source*
+  - [Dificilmente]() a implementação será [*open source*]()
 
 ```sql
+-- calculate simple quantiles
 EXEC sp_execute_external_script
   @language = N'R'
   ,@script = N'
-    res &lt;-quantile(InputDataSet$Ages);
+    res &lt;- quantile(InputDataSet$Ages);
     print(res);'
   ,@input_data_1 = N'
     SELECT Ages = DATEDIFF(YEAR,[BirthDate],GETDATE())
@@ -68,16 +90,19 @@ EXEC sp_execute_external_script
 ---
 # Solução 2
 
-Conexao do software estatístico aos SGBDs relacionais
+[Conexão]() do software estatístico aos SGBDs relacionais
 
-Por que usar o R como principal linguagem estatística?
+- Por que usar o [R]() como principal linguagem estatística?
 
-  - Linguagem estatistica mais amplamente adotada
+   - Linguagem estatística mais amplamente adotada
+   
+   - *Open source*
+   
+   - Comunidade ativa
+   
+&lt;img src="figures/logo_r2.png" style="display: block; margin: auto 0 auto auto;" /&gt;
 
-  - Open source
 
-  - Comunidade ativa
-  
 ```r
 con_postgres &lt;- RPostgres::dbConnect(
   RPostgres::Postgres(),
@@ -94,53 +119,98 @@ class: inverse, center, middle
 ---
 # Diagrama
 
-&lt;img src="figures/diagrama.png" width="1433" /&gt;
+![](figures/diagrama.png)&lt;!-- --&gt;
 
 ---
-# BD
+# BDs
 
-Qualquer SGBD pode ser suportado desde que um *backend* seja criado
+[Qualquer SGBD]() pode ser suportado [desde que um *backend* seja criado]()
 
   - Aproveita-se do fato de que todo SGBD tem suporte para conexões externas
-  
-# DBI
 
-*Database Interface* para o R
 
-  - Fornece uma especificação de interface que permite qualquer um criar novos
-  *backends* para um BD
-  
-  - Padronização das funções possibilita que se construam pacotes genéricos
-  para lidar com os dados de uma conexão
+
+&lt;img src="figures/logos_bds_relac2.png" style="display: block; margin: auto;" /&gt;
+
 
 ---
+# DBI
 
-# Backends
+[Interface de banco de dados]() para comunicação entre R e SGDBs
+  
+  - Permite que o R envie comandos para os bancos de dados, 
+  [independentemente do SGBD utilizado]()
+  
+  - [Padronização das funções]() possibilita a construção de pacotes genéricos
+  para lidar com os dados de uma conexão, facilitando:
+    - A criação e implementação dos pacotes (necessidade de menos decisões
+    arbitrárias) 
+    - A manipulação dos usuários (padrão familiar)
+  
+  - Fornece uma [especificação de interface]() que permite qualquer um criar
+  novos *backends* para um BD
+  
+---
+# Backends dos SGBDs relacionais
 
-São bibliotecas específicas que permitem conectar o R com um SGBD
+[Bibliotecas específicas]() que permitem a conexão entre o R e SGBDs relacionais
+  
+  - Permite o envio de *queries* e recebimento de dados do BD
+  
+  - Permite ao [`dplyr`]() trabalhar com [múltiplas fontes de dados dados]()
+  usando o [mesmo código]()
+    
+  - Funções de leitura (`dbReadTable`) e escrita (`dbWriteTable`) de tabelas
+  através de uma conexão
+  
+  - Exemplos:
+    - [`RMariaDB`]() 
+    - [`RPostgres`]()  
+    - [`RSQLite`]()
+    - [`bigrquery`]()
+    
+---
+# BD, DBI, Backends dos SGBDs relacionais
 
-  - Funções de leitura e escrita de tabelas através de uma conexão
-  
-  - Permite enviar *queries* e receber dados do BD
-  
-  - `RMariaDB`, `RPostgres`,  `RSQLite`, `bigrquery`, etc...
-  
-  - Permite ao `dplyr` trabalhar com múltiplas fontes de dados dados diferentes
-  usando o mesmo código
+Os argumentos para [`DBI :: dbConnect ()`]() variam de banco de dados para banco
+de dados, mas o primeiro argumento é sempre o *backend* do banco de dados:
+
+  - [RSQLite :: SQLite ()]() para `RSQLite`
+  - [RMySQL :: MySQL ()]() para `RMySQL`
+  - [RPostgreSQL :: PostgreSQL ()]() para `RPostgreSQL`
+  - [bigrquery :: bigquery ()]() para `BigQuery`
+  - [odbc :: odbc ()]() para `odbc`
+
+`SQLite` precisa apenas de outro argumento: o caminho para o banco de dados.
+Porém, a maioria dos bancos de dados não está em um arquivo, mas sim em outro
+servidor, fazendo com que, na prática, o código seja semelhante a:
+
+
+```r
+con &lt;- DBI::dbConnect(RMySQL::MySQL(), 
+  host = "database.rstudio.com",
+  user = "fernanda",
+  password = rstudioapi::askForPassword("Database password")
+)
+```
 
 ---
 # Dbplyr
 
-Um pacote para tradução de código `dplyr` em código SQL
+Pacote do R para [tradução de código `dplyr` em código SQL]() e [tradução da]()
+[resposta do banco de dados em um *R data frame*]()  
 
-  - De forma automática, cosegue gerar um código SQL a partir de um código em R
+  - [De forma automática](), consegue gerar um código em SQL a partir de um
+  código em R
   
-  - Capaz de transformar verbos do `dplyr` em *queries* completos
+  - Capaz de transformar verbos do pacote do R `dplyr` em *queries* SQL
+  completas (atua, portanto, como *backend* do `dplyr`)
+  
+  - Permite [receber resultados parciais dos SGBDs relacionais]() e traduzí-los
+  em uma resposta interpretável pelo R
   
   - Não consegue traduzir qualquer código, mas ajuda bastante
-  
-  - Permite receber resultados parciais do SGBD e traduzí-los em uma resposta
-  interpretável pelo R
+
 
 ```r
 dbplyr::translate_sql(x ^ 2L)
@@ -153,21 +223,41 @@ dbplyr::translate_sql(log(x, 10))
 ---
 # Dplyr
 
-Uma gramática para manupulação de dados
+Pacote do R com gramática para [manipulação de dados]()
 
-  - Transformacao sintática em bases de dados
+  - Fornece um [conjunto consistente de verbos]() que ajudam a resolver os
+  desafios
+  mais comuns de manipulação de dados
+
+  - [Transformação sintática]() sobre tabelas
   
-  - Pipelines, o que permite que cada linha delimite uma ação, como se fosse uma
-  receita de bolo
+  - [*Pipelines*](), o que permite que cada linha delimite uma ação, como se
+  fosse uma receita de bolo
   
-  - Operadores infixos, o que permite que se saiba exatamente a ordem das
+  - [Operadores infixos](), o que permite que se saiba exatamente a ordem das
   operações
   
-  - Metaprogramacao, o que garante código mais limpo
+  - [Metaprogramação](), o que garante um código mais limpo
   
-  - *Quasi-quotations*
+  - [*Quasi-quotations*](), o que garante a escrita de funções confiáveis que
+  reduzem a duplicação/duplicidade no código
   
-  - Pacote mais famoso e mais comum por conta das vantagens mencionadas.
+  - [Pacote do R mais famoso e mais utilizado](), graças às vantagens
+  mencionadas
+
+---
+# Dplyr
+
+Operações [*lazy*]()
+
+  - [Ao trabalhar com bancos de dados](), o `dplyr` tenta ser o mais preguiçoso
+  possível
+  
+  - Atrasa a execução de qualquer trabalho até o último momento possível: 
+  reúne tudo o que você deseja fazer e [envia ao BD em uma única etapa]().
+  
+  - Nunca puxa [dados para o R](), a menos que você os [solicite]()
+  [explicitamente]() (`print()`, `collect()`).
 
 ---
 class: inverse, center, middle
@@ -198,7 +288,7 @@ cnes %&gt;%
 # Dbplyr
 
 ```r
-*tbl(con, "cnes") %&gt;%
+* tbl(con, "cnes") %&gt;%
   select(def_atividad, def_turno_at, starts_with("mun_")) %&gt;%
   filter(def_atividad == "Unidade SEM atividade de Ensino") %&gt;%
   mutate(
@@ -219,6 +309,10 @@ cnes %&gt;%
 ---
 # Tradução
 
+[`show_query()`]()
+
+[`explain()`]()
+
 ```sql
 SELECT "localizacao", SUM("so_um_turno") * 100.0 / COUNT(*) AS "f_so_um_turno"
 FROM (SELECT "def_atividad", "def_turno_at", "mun_MUNNOME", "mun_MUNNOMEX", "mun_AMAZONIA", "mun_FRONTEIRA", "mun_CAPITAL", "mun_MSAUDCOD", "mun_RSAUDCOD", "mun_CSAUDCOD", "mun_LATITUDE", "mun_LONGITUDE", "mun_ALTITUDE", "mun_AREA", "mun_codigo_adotado", "mun_coordenadas", CASE WHEN ("def_turno_at" like 'SOMENTE') THEN (1.0) WHEN NOT("def_turno_at" like 'SOMENTE') THEN (0.0) END AS "so_um_turno", CASE WHEN ("mun_CAPITAL" = 'S') THEN ('CAPITAL') WHEN NOT("mun_CAPITAL" = 'S') THEN ('INTERIOR') END AS "localizacao"
@@ -237,16 +331,17 @@ HashAggregate  (cost=4091.28..4091.33 rows=2 width=64)
 ```
 
 ---
+
+# Desempenho?
+
+
+---
 class: inverse, center, middle
-# Obrigado!
+# Obrigado(a)!
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
-<script>var slideshow = remark.create({
-"highlightStyle": "github",
-"highlightLines": true,
-"countIncrementalSlides": false
-});
+<script>var slideshow = remark.create();
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
 });
@@ -285,24 +380,7 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
     deleted = true;
   });
-})();
-// adds .remark-code-has-line-highlighted class to <pre> parent elements
-// of code chunks containing highlighted lines with class .remark-code-line-highlighted
-(function(d) {
-  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
-  const preParents = [];
-  const findPreParent = function(line, p = 0) {
-    if (p > 1) return null; // traverse up no further than grandparent
-    const el = line.parentElement;
-    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
-  };
-
-  for (let line of hlines) {
-    let pre = findPreParent(line);
-    if (pre && !preParents.includes(pre)) preParents.push(pre);
-  }
-  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
-})(document);</script>
+})();</script>
 
 <script>
 (function() {

@@ -1,29 +1,19 @@
 ---
 title: "BDs Relacionais & Programação Estatística"
-date: 'Caio Lente \ \ \ \ \ Fernanda Fortti'
+subtitle: "<br>Disciplina MAC5861 - IME/USP<br>"
+author: "<br>Caio Lente <br> Fernanda Fortti<br>"
+date: '<br>13 de novembro de 2019<br>'
+encoding: "UTF-8"
 output:
   xaringan::moon_reader:
-    lib_dir: libs
-    css: xaringan-themer.css
-    nature:
-      highlightStyle: github
-      highlightLines: true
-      countIncrementalSlides: false
+  lib_dir: libs
+  nature:
+    highlightStyle: github
+    highlightLines: true
+    countIncrementalSlides: false
 ---
-
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
-```
-
-```{r xaringan-themer, include=FALSE}
-library(xaringanthemer)
-duo(
-  primary_color = "#1F4257",
-  secondary_color = "#F97B64",
-  header_font_google = google_font("Arvo"),
-  text_font_google   = google_font("Open Sans", "400", "400i"),
-  code_font_google   = google_font("Fira Code")
-)
 ```
 
 class: inverse, center, middle
@@ -32,15 +22,39 @@ class: inverse, center, middle
 ---
 # O Problema
 
-BDs relacionais são limitados em relação à programação estatística
+- [Bancos de Dados (BDs) relacionais]() são [limitados]() no que diz respeito à 
+[programação estatística]()
   
-  - Moda, percentil, modelagem são tarefas difíceis para SGBDs
+  - Moda, percentil, modelagem e cálculos estatísticos são tarefas difíceis 
+  para Sistemas Gerenciadores de Bancos de Dados (SGBDs).
   
-Programas em R/Python nem sempre são viáveis com muitos dados
+    >*While basic aggregation operations (SUM, AVG) are part of SQL, there is 
+    no support for other commonly used operations like variance and co-variance.
+    Such computations, as well as more advanced ones like regression and 
+    principal component analysis, are usually performedusing statistical 
+    packages and libraries.*
+                                            (Srivastava & Ngo, 2014)
+
+```{r, echo=FALSE, fig.align = "center"}
+knitr::include_graphics("figures/logos_bds_relac.png")
+```
+
+---
+# O Problema
+  
+- [Ferramentas estatísticas]() nem sempre são viáveis com [muitos dados]()
   
   - O que cabe em disco não necessariamente cabe na memória
   
   - Se os dados já estão em um BD, por que trazê-los para memória?
+  
+    >*If your data fits in memory there is no advantage to putting it in a 
+    database: it will only be slower and more frustrating.*
+                                                    (Wickham, 2019)
+                                          
+```{r, echo = FALSE, fig.align = "center"}
+knitr::include_graphics("figures/logos_soft_estat.png")
+```
 
 ---
 class: inverse, center, middle
@@ -49,43 +63,51 @@ class: inverse, center, middle
 ---
 # Solução 1
 
-Implementação da ferramenta estatística dentro dos SGBDs relacionais
+[Implementação]() da ferramenta estatística dentro dos SGBDs relacionais
 
-Limitações:
+- [Limitações]()
 
-  - Nem todo SGBD apresenta essa funcionalidade (Postgres por exemplo)
+  - Nem todo SGBD apresenta essa [funcionalidade]() (Postgres, p. ex.)
 
   - Vendedores dos SGBDs precisam implementar a funcionalidade (o que pode
-  custar caro e/ou demorar para ser feito)
+  custar [caro]() e/ou [demorar]() para ser feito)
 
-  - Dificilmente a implementação será *open source*
+  - [Dificilmente]() a implementação será [*open source*]()
 
 ```sql
+-- calculate simple quantiles
 EXEC sp_execute_external_script
   @language = N'R'
   ,@script = N'
-    res <-quantile(InputDataSet$Ages);
+    res <- quantile(InputDataSet$Ages);
     print(res);'
   ,@input_data_1 = N'
     SELECT Ages = DATEDIFF(YEAR,[BirthDate],GETDATE())
     FROM [AdventureWorksDW2014].[dbo].[DimCustomer];';
 ```
-
+```{r, eval = FALSE, include = FALSE}
+#calculate simple quantiles
+stats::quantile(InputDataSet$Ages)
+```
 
 ---
 # Solução 2
 
-Conexao do software estatístico aos SGBDs relacionais
+[Conexão]() do software estatístico aos SGBDs relacionais
 
-Por que usar o R como principal linguagem estatística?
+- Por que usar o [R]() como principal linguagem estatística?
 
-  - Linguagem estatistica mais amplamente adotada
+   - Linguagem estatística mais amplamente adotada
+   
+   - *Open source*
+   
+   - Comunidade ativa
+   
+```{r, echo = FALSE, fig.align = 'right'}
+knitr::include_graphics("figures/logo_r2.png")
+```
 
-  - Open source
-
-  - Comunidade ativa
-  
-```r
+```{r, eval = FALSE}
 con_postgres <- RPostgres::dbConnect(
   RPostgres::Postgres(),
   dbname = "my_database",
@@ -101,57 +123,102 @@ class: inverse, center, middle
 ---
 # Diagrama
 
-```{r, echo=FALSE}
+```{r, echo = FALSE}
 knitr::include_graphics("figures/diagrama.png")
 ```
 
 ---
-# BD
+# BDs
 
-Qualquer SGBD pode ser suportado desde que um *backend* seja criado
+[Qualquer SGBD]() pode ser suportado [desde que um *backend* seja criado]()
 
   - Aproveita-se do fato de que todo SGBD tem suporte para conexões externas
-  
-# DBI
 
-*Database Interface* para o R
 
-  - Fornece uma especificação de interface que permite qualquer um criar novos
-  *backends* para um BD
-  
-  - Padronização das funções possibilita que se construam pacotes genéricos
-  para lidar com os dados de uma conexão
+
+```{r, echo = FALSE, fig.align = "center"}
+knitr::include_graphics("figures/logos_bds_relac2.png")
+```
+
 
 ---
+# DBI
 
-# Backends
+[Interface de banco de dados]() para comunicação entre R e SGDBs
+  
+  - Permite que o R envie comandos para os bancos de dados, 
+  [independentemente do SGBD utilizado]()
+  
+  - [Padronização das funções]() possibilita a construção de pacotes genéricos
+  para lidar com os dados de uma conexão, facilitando:
+    - A criação e implementação dos pacotes (necessidade de menos decisões
+    arbitrárias) 
+    - A manipulação dos usuários (padrão familiar)
+  
+  - Fornece uma [especificação de interface]() que permite qualquer um criar
+  novos *backends* para um BD
+  
+---
+# Backends dos SGBDs relacionais
 
-São bibliotecas específicas que permitem conectar o R com um SGBD
+[Bibliotecas específicas]() que permitem a conexão entre o R e SGBDs relacionais
+  
+  - Permite o envio de *queries* e recebimento de dados do BD
+  
+  - Permite ao [`dplyr`]() trabalhar com [múltiplas fontes de dados dados]()
+  usando o [mesmo código]()
+    
+  - Funções de leitura (`dbReadTable`) e escrita (`dbWriteTable`) de tabelas
+  através de uma conexão
+  
+  - Exemplos:
+    - [`RMariaDB`]() 
+    - [`RPostgres`]()  
+    - [`RSQLite`]()
+    - [`bigrquery`]()
+    
+---
+# BD, DBI, Backends dos SGBDs relacionais
 
-  - Funções de leitura e escrita de tabelas através de uma conexão
-  
-  - Permite enviar *queries* e receber dados do BD
-  
-  - `RMariaDB`, `RPostgres`,  `RSQLite`, `bigrquery`, etc...
-  
-  - Permite ao `dplyr` trabalhar com múltiplas fontes de dados dados diferentes
-  usando o mesmo código
+Os argumentos para [`DBI :: dbConnect ()`]() variam de banco de dados para banco
+de dados, mas o primeiro argumento é sempre o *backend* do banco de dados:
+
+  - [RSQLite :: SQLite ()]() para `RSQLite`
+  - [RMySQL :: MySQL ()]() para `RMySQL`
+  - [RPostgreSQL :: PostgreSQL ()]() para `RPostgreSQL`
+  - [bigrquery :: bigquery ()]() para `BigQuery`
+  - [odbc :: odbc ()]() para `odbc`
+
+`SQLite` precisa apenas de outro argumento: o caminho para o banco de dados.
+Porém, a maioria dos bancos de dados não está em um arquivo, mas sim em outro
+servidor, fazendo com que, na prática, o código seja semelhante a:
+
+```{r, eval = FALSE}
+con <- DBI::dbConnect(RMySQL::MySQL(), 
+  host = "database.rstudio.com",
+  user = "fernanda",
+  password = rstudioapi::askForPassword("Database password")
+)
+```
 
 ---
 # Dbplyr
 
-Um pacote para tradução de código `dplyr` em código SQL
+Pacote do R para [tradução de código `dplyr` em código SQL]() e [tradução da]()
+[resposta do banco de dados em um *R data frame*]()  
 
-  - De forma automática, cosegue gerar um código SQL a partir de um código em R
+  - [De forma automática](), consegue gerar um código em SQL a partir de um
+  código em R
   
-  - Capaz de transformar verbos do `dplyr` em *queries* completos
+  - Capaz de transformar verbos do pacote do R `dplyr` em *queries* SQL
+  completas (atua, portanto, como *backend* do `dplyr`)
+  
+  - Permite [receber resultados parciais dos SGBDs relacionais]() e traduzí-los
+  em uma resposta interpretável pelo R
   
   - Não consegue traduzir qualquer código, mas ajuda bastante
-  
-  - Permite receber resultados parciais do SGBD e traduzí-los em uma resposta
-  interpretável pelo R
 
-```r
+```{r, eval = FALSE}
 dbplyr::translate_sql(x ^ 2L)
 #> <SQL> POWER(`x`, 2)
 
@@ -162,21 +229,41 @@ dbplyr::translate_sql(log(x, 10))
 ---
 # Dplyr
 
-Uma gramática para manupulação de dados
+Pacote do R com gramática para [manipulação de dados]()
 
-  - Transformacao sintática em bases de dados
+  - Fornece um [conjunto consistente de verbos]() que ajudam a resolver os
+  desafios
+  mais comuns de manipulação de dados
+
+  - [Transformação sintática]() sobre tabelas
   
-  - Pipelines, o que permite que cada linha delimite uma ação, como se fosse uma
-  receita de bolo
+  - [*Pipelines*](), o que permite que cada linha delimite uma ação, como se
+  fosse uma receita de bolo
   
-  - Operadores infixos, o que permite que se saiba exatamente a ordem das
+  - [Operadores infixos](), o que permite que se saiba exatamente a ordem das
   operações
   
-  - Metaprogramacao, o que garante código mais limpo
+  - [Metaprogramação](), o que garante um código mais limpo
   
-  - *Quasi-quotations*
+  - [*Quasi-quotations*](), o que garante a escrita de funções confiáveis que
+  reduzem a duplicação/duplicidade no código
   
-  - Pacote mais famoso e mais comum por conta das vantagens mencionadas.
+  - [Pacote do R mais famoso e mais utilizado](), graças às vantagens
+  mencionadas
+
+---
+# Dplyr
+
+Operações [*lazy*]()
+
+  - [Ao trabalhar com bancos de dados](), o `dplyr` tenta ser o mais preguiçoso
+  possível
+  
+  - Atrasa a execução de qualquer trabalho até o último momento possível: 
+  reúne tudo o que você deseja fazer e [envia ao BD em uma única etapa]().
+  
+  - Nunca puxa [dados para o R](), a menos que você os [solicite]()
+  [explicitamente]() (`print()`, `collect()`).
 
 ---
 class: inverse, center, middle
@@ -207,7 +294,7 @@ cnes %>%
 # Dbplyr
 
 ```r
-*tbl(con, "cnes") %>%
+* tbl(con, "cnes") %>%
   select(def_atividad, def_turno_at, starts_with("mun_")) %>%
   filter(def_atividad == "Unidade SEM atividade de Ensino") %>%
   mutate(
@@ -228,6 +315,10 @@ cnes %>%
 ---
 # Tradução
 
+[`show_query()`]()
+
+[`explain()`]()
+
 ```sql
 SELECT "localizacao", SUM("so_um_turno") * 100.0 / COUNT(*) AS "f_so_um_turno"
 FROM (SELECT "def_atividad", "def_turno_at", "mun_MUNNOME", "mun_MUNNOMEX", "mun_AMAZONIA", "mun_FRONTEIRA", "mun_CAPITAL", "mun_MSAUDCOD", "mun_RSAUDCOD", "mun_CSAUDCOD", "mun_LATITUDE", "mun_LONGITUDE", "mun_ALTITUDE", "mun_AREA", "mun_codigo_adotado", "mun_coordenadas", CASE WHEN ("def_turno_at" like 'SOMENTE') THEN (1.0) WHEN NOT("def_turno_at" like 'SOMENTE') THEN (0.0) END AS "so_um_turno", CASE WHEN ("mun_CAPITAL" = 'S') THEN ('CAPITAL') WHEN NOT("mun_CAPITAL" = 'S') THEN ('INTERIOR') END AS "localizacao"
@@ -246,5 +337,10 @@ HashAggregate  (cost=4091.28..4091.33 rows=2 width=64)
 ```
 
 ---
+
+# Desempenho?
+
+
+---
 class: inverse, center, middle
-# Obrigado!
+# Obrigado(a)!
