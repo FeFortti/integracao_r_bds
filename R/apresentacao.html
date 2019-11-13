@@ -26,18 +26,18 @@ class: inverse, center, middle
 ---
 # O Problema
 
-- [Bancos de Dados (BDs) relacionais]() são [limitados]() no que diz respeito à 
+- Bancos de dados [(BDs) relacionais]() são [limitados]() no que diz respeito à
 [programação estatística]()
   
-  - Moda, percentil, modelagem e cálculos estatísticos são tarefas difíceis 
-  para Sistemas Gerenciadores de Bancos de Dados (SGBDs).
+  - Moda, percentil, modelagem e cálculos estatísticos são [tarefas difíceis]() 
+  [para]() Sistemas Gerenciadores de Bancos de Dados [(SGBDs)]().
   
     &gt;*While basic aggregation operations (SUM, AVG) are part of SQL, there is 
     no support for other commonly used operations like variance and co-variance.
     Such computations, as well as more advanced ones like regression and 
-    principal component analysis, are usually performedusing statistical 
+    principal component analysis, are usually performed using statistical 
     packages and libraries.*
-                                            (Srivastava &amp; Ngo, 2014)
+                                    (Srivastava &amp; Ngo, 2014)
 
 &lt;img src="figures/logos_bds_relac.png" style="display: block; margin: auto;" /&gt;
 
@@ -46,13 +46,13 @@ class: inverse, center, middle
   
 - [Ferramentas estatísticas]() nem sempre são viáveis com [muitos dados]()
   
-  - O que cabe em disco não necessariamente cabe na memória
+  - O que cabe em disco [não]() necessariamente [cabe na memória]()
   
-  - Se os dados já estão em um BD, por que trazê-los para memória?
+  - Se os dados [já estão em um BD](), por que trazê-los para memória?
   
     &gt;*If your data fits in memory there is no advantage to putting it in a 
     database: it will only be slower and more frustrating.*
-                                                    (Wickham, 2019)
+                                    (Wickham, 2019)
                                           
 &lt;img src="figures/logos_soft_estat.png" style="display: block; margin: auto;" /&gt;
 
@@ -63,7 +63,7 @@ class: inverse, center, middle
 ---
 # Solução 1
 
-[Implementação]() da ferramenta estatística dentro dos SGBDs relacionais
+[Implementação]() da ferramenta estatística [dentro dos SGBDs relacionais]()
 
 - [Limitações]()
 
@@ -90,15 +90,15 @@ EXEC sp_execute_external_script
 ---
 # Solução 2
 
-[Conexão]() do software estatístico aos SGBDs relacionais
+[Conexão]() do software estatístico [aos SGBDs relacionais]()
 
-- Por que usar o [R]() como principal linguagem estatística?
+- Por que usar o [**R**]() como principal [linguagem estatística]()?
 
-   - Linguagem estatística mais amplamente adotada
+   - Linguagem estatística mais [amplamente adotada]()
    
-   - *Open source*
+   - [*Open source*]()
    
-   - Comunidade ativa
+   - [Comunidade ativa]()
    
 &lt;img src="figures/logo_r2.png" style="display: block; margin: auto 0 auto auto;" /&gt;
 
@@ -119,7 +119,7 @@ class: inverse, center, middle
 ---
 # Diagrama
 
-![](figures/diagrama.png)&lt;!-- --&gt;
+&lt;img src="figures/diagrama.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # BDs
@@ -136,7 +136,7 @@ class: inverse, center, middle
 ---
 # DBI
 
-[Interface de banco de dados]() para comunicação entre R e SGDBs
+[Interface de BDs]() consistente para comunicação entre R e SGDBs
   
   - Permite que o R envie comandos para os bancos de dados, 
   [independentemente do SGBD utilizado]()
@@ -147,18 +147,17 @@ class: inverse, center, middle
     arbitrárias) 
     - A manipulação dos usuários (padrão familiar)
   
-  - Fornece uma [especificação de interface]() que permite qualquer um criar
+  - [Fornece uma especificação de interface]() que permite qualquer um criar
   novos *backends* para um BD
   
 ---
-# Backends dos SGBDs relacionais
+# *Backends* dos SGBDs relacionais
 
 [Bibliotecas específicas]() que permitem a conexão entre o R e SGBDs relacionais
   
   - Permite o envio de *queries* e recebimento de dados do BD
   
-  - Permite ao [`dplyr`]() trabalhar com [múltiplas fontes de dados dados]()
-  usando o [mesmo código]()
+  - Permite ao [`dplyr`]() trabalhar com [múltiplas fontes de dados usando o]() [mesmo código]()
     
   - Funções de leitura (`dbReadTable`) e escrita (`dbWriteTable`) de tabelas
   através de uma conexão
@@ -170,27 +169,25 @@ class: inverse, center, middle
     - [`bigrquery`]()
     
 ---
-# BD, DBI, Backends dos SGBDs relacionais
+# BD, DBI, *Backends* dos SGBDs relacionais
 
-Os argumentos para [`DBI :: dbConnect ()`]() variam de banco de dados para banco
-de dados, mas o primeiro argumento é sempre o *backend* do banco de dados:
+Os argumentos para [`DBI :: dbConnect ()`]() variam de BD para BD, mas o [primeiro argumento é sempre o *backend*]() do BD:
 
-  - [RSQLite :: SQLite ()]() para `RSQLite`
-  - [RMySQL :: MySQL ()]() para `RMySQL`
-  - [RPostgreSQL :: PostgreSQL ()]() para `RPostgreSQL`
-  - [bigrquery :: bigquery ()]() para `BigQuery`
-  - [odbc :: odbc ()]() para `odbc`
+  - [`RSQLite :: SQLite ()`]() para `RSQLite`
+  - [`RMySQL :: MySQL ()`]() para `RMySQL`
+  - [`RPostgreSQL :: PostgreSQL ()`]() para `RPostgreSQL`
+  - [`bigrquery :: bigquery ()`]() para `BigQuery`
+  - [`odbc :: odbc ()`]() para `odbc`
 
-`SQLite` precisa apenas de outro argumento: o caminho para o banco de dados.
-Porém, a maioria dos bancos de dados não está em um arquivo, mas sim em outro
-servidor, fazendo com que, na prática, o código seja semelhante a:
+`SQLite` precisa de outro argumento: o caminho para o banco de dados. Porém, a [maioria dos BDs]() não [está]() em um arquivo, mas sim [em outro servidor](). Isso faz com que, na prática, o [código seja semelhante a]():
 
 
 ```r
-con &lt;- DBI::dbConnect(RMySQL::MySQL(), 
-  host = "database.rstudio.com",
-  user = "fernanda",
-  password = rstudioapi::askForPassword("Database password")
+con &lt;- DBI::dbConnect(
+  RMySQL::MySQL(),
+  host = "database.ime.com",
+  user = "fernanda_fortti",
+  password = rstudioapi::askForPassword("database_password")
 )
 ```
 
@@ -285,7 +282,11 @@ cnes %&gt;%
 ```
 
 ---
-# Dbplyr
+# Dplyr + Dbplyr
+
+[`dplyr::tbl ()`]()
+
+[`dplyr::collect ()`]()
 
 ```r
 * tbl(con, "cnes") %&gt;%
@@ -309,9 +310,9 @@ cnes %&gt;%
 ---
 # Tradução
 
-[`show_query()`]()
+[`dplyr::show_query ()`]()
 
-[`explain()`]()
+[`dplyr::explain ()`]()
 
 ```sql
 SELECT "localizacao", SUM("so_um_turno") * 100.0 / COUNT(*) AS "f_so_um_turno"
@@ -336,8 +337,15 @@ HashAggregate  (cost=4091.28..4091.33 rows=2 width=64)
 
 
 ---
+# Referências
+
+
+
+---
 class: inverse, center, middle
 # Obrigado(a)!
+
+&lt;img src="figures/smilling_eyes.png" width="10%" /&gt;&lt;img src="figures/nerd_face.png" width="10%" /&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
