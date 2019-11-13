@@ -23,7 +23,8 @@ class: inverse, center, middle
 ---
 # O Problema
 
-- Bancos de Dados Relacionais [(BDRs)]() são [limitados]() no que diz respeito à [programação estatística]()
+- Bancos de Dados Relacionais [(BDRs)]() são [limitados]() no que diz respeito
+à [programação estatística]()
   
   - Moda, percentil, modelagem e cálculos estatísticos mais sofisicados são 
   [tarefas difíceis para]() Sistemas Gerenciadores de Bancos de Dados
@@ -92,7 +93,8 @@ EXEC sp_execute_external_script
 
 [Conexão]() do software estatístico [aos SGBDRs]()
 
-- Por que usar o [**R**]() como [software]() e principal [linguagem estatística]()?
+- Por que usar o [**R**]() como [software]() e principal [linguagem
+estatística]()?
 
    - Linguagem estatística mais [amplamente adotada]()
    
@@ -181,10 +183,11 @@ entre R e SGDBRs
 ---
 # BDRs, DBI, *Backends* dos SGBDRs
 
+<<<<<<< HEAD
 Os argumentos para [`DBI::dbConnect()`]() variam de BDR para BDR, mas o [primeiro argumento é sempre o *backend*]() do BDR:
 
   - [`RSQLite::SQLite()`]() para `RSQLite`
-  - [`RMySQL::MySQL()`]() para `RMySQL`
+  - [`RMySQL::MySQL()`]() para `RMySQL` (abandonado)
   - [`RPostgreSQL::PostgreSQL()`]() para `RPostgreSQL`
   - [`RMariaDB::MariaDB()`]() para `RMariaDB`
   - [`bigrquery::bigquery()`]() para `BigQuery`
