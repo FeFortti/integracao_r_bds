@@ -102,7 +102,7 @@ estatística]()?
    
    - [Comunidade ativa]()
    
-```{r, echo = FALSE, fig.align = "right", tidy.opts = list(blank = FALSE)}
+```{r, echo = FALSE, fig.align = "center", tidy.opts = list(blank = FALSE)}
 knitr::include_graphics("figures/logo_r2.png")
 ```
 
