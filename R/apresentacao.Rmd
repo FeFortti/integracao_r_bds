@@ -81,7 +81,7 @@ class: inverse, center, middle
 EXEC sp_execute_external_script
   @language = N'R'
   ,@script = N'
-    res <- quantile(InputDataSet$Ages);
+*    res <- quantile(InputDataSet$Ages);
     print(res);'
   ,@input_data_1 = N'
     SELECT Ages = DATEDIFF(YEAR,[BirthDate],GETDATE())
