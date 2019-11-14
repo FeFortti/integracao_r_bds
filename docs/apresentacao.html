@@ -1,21 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>BDs Relacionais &amp; Programação Estatística</title>
+    <meta charset="utf-8" />
+    <meta name="author" content=" Caio Lente   Fernanda Fortti" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css\extra.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# BDs Relacionais &amp; Programação Estatística
+## <br>Disciplina MAC5861 - IME/USP<br>
+### <br>Caio Lente <br> Fernanda Fortti<br>
+### <br>13 de novembro de 2019<br>
+
 ---
-title: "BDs Relacionais & Programação Estatística"
-subtitle: "<br>Disciplina MAC5861 - IME/USP<br>"
-author: "<br>Caio Lente <br> Fernanda Fortti<br>"
-date: '<br>13 de novembro de 2019<br>'
-encoding: "UTF-8"
-output:
-  xaringan::moon_reader:
-    css: ["default", "default-fonts"]
-    lib_dir: libs
-    nature:
-      highlightStyle: github
-      highlightLines: true
-      countIncrementalSlides: false
----
-```{r setup, include=FALSE}
-options(htmltools.dir.version = FALSE)
-```
+
+
 
 class: inverse, center, middle
 # Motivação
@@ -30,16 +34,16 @@ class: inverse, center, middle
   [tarefas difíceis para]() Sistemas Gerenciadores de Bancos de Dados
   Relacionais [(SGBDRs)]()
   
-    >*While basic aggregation operations (SUM, AVG) are part of SQL, there is 
+    &gt;*While basic aggregation operations (SUM, AVG) are part of SQL, there is 
     no support for other commonly used operations like variance and covariance.
     Such computations, as well as more advanced ones like regression and 
     principal component analysis, are usually performed using statistical 
     packages and libraries.*
-                                        (Srivastava & Ngo, 2014)
+                                        (Srivastava &amp; Ngo, 2014)
 
-```{r, echo=FALSE, fig.align = "center", tidy.opts = list(blank = FALSE)}
-knitr::include_graphics("figures/logos_bds_relac2.png")
-```
+.div-style3[
+&lt;img src="figures/logos_bds_relac2.png" style="display: block; margin: auto;" /&gt;
+]
 
 ---
 # O Problema
@@ -50,13 +54,13 @@ knitr::include_graphics("figures/logos_bds_relac2.png")
   
   - Se os dados [já estão em um BD](), por que trazê-los para memória?
   
-    >*If your data fits in memory there is no advantage to putting it in a 
+    &gt;*If your data fits in memory there is no advantage to putting it in a 
     database: it will only be slower and more frustrating.*
                                                 (Wickham, 2019)
-                                          
-```{r, echo = FALSE, fig.align = "center", tidy.opts = list(blank = FALSE)}
-knitr::include_graphics("figures/logos_soft_estat2.png")
-```
+
+.div-style4[                                          
+&lt;img src="figures/logos_soft_estat2.png" style="display: block; margin: auto;" /&gt;
+]
 
 ---
 class: inverse, center, middle
@@ -81,7 +85,7 @@ class: inverse, center, middle
 EXEC sp_execute_external_script
   @language = N'R'
   ,@script = N'
-*    res <- quantile(InputDataSet$Ages);
+*    res &lt;- quantile(InputDataSet$Ages);
     print(res);'
   ,@input_data_1 = N'
     SELECT Ages = DATEDIFF(YEAR,[BirthDate],GETDATE())
@@ -102,12 +106,13 @@ estatística]()?
    
    - [Comunidade ativa]()
    
-```{r, echo = FALSE, fig.align = "center", tidy.opts = list(blank = FALSE)}
-knitr::include_graphics("figures/logo_r2.png")
-```
+.div-style2[   
+&lt;img src="figures/logo_r2.png" style="display: block; margin: auto;" /&gt;
+]
 
-```{r, eval = FALSE}
-con_postgres <- RPostgres::dbConnect(
+
+```r
+con_postgres &lt;- RPostgres::dbConnect(
   RPostgres::Postgres(),
   dbname = "my_database",
   host = "localhost", port = 54320,
@@ -123,9 +128,7 @@ class: inverse, center, middle
 class: inverse
 # Diagrama
 
-```{r, echo = FALSE, fig.align = "center"}
-knitr::include_graphics("figures/diagrama2.png")
-```
+&lt;img src="figures/diagrama2.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # BDRs
@@ -134,12 +137,9 @@ knitr::include_graphics("figures/diagrama2.png")
 
   - Aproveita-se do fato de que todo SGBDR tem suporte para conexões externas
 
-
-
-```{r, echo = FALSE, fig.align = "center"}
-knitr::include_graphics("figures/logos_bds_relac3.png")
-```
-
+.div-style5[
+&lt;img src="figures/logos_bds_relac3.png" style="display: block; margin: auto;" /&gt;
+]
 
 ---
 # DBI
@@ -192,14 +192,14 @@ Os argumentos para [`DBI::dbConnect()`]() variam de BDR para BDR, mas o
   - [`RMariaDB::MariaDB()`]() para `RMariaDB`*
   - [`bigrquery::bigquery()`]() para `BigQuery`
   
-######*Funciona de backend para MariaDB e MySQL; substituiu o pacote `RMySQL`
+.small[*Funciona de backend para [MariaDB e MySQL](); substituiu o pacote `RMySQL`]
 
 `SQLite` precisa de outro argumento: o caminho para o BDR. Porém, a [maioria
 dos BDRs]() não [está]() em um arquivo, mas sim [em outro servidor](). Isso faz
 com que, na prática, o [código seja semelhante a]():
 
 ```r
-con <- RPostgres::dbConnect(
+con &lt;- RPostgres::dbConnect(
   RPostgres::Postgres(), dbname = "alunos",
   host = "database.ime.com", port = 54320,
   user = "professorMAC5861"
@@ -226,14 +226,18 @@ Pacote do R para [tradução de código `dplyr` em código SQL]() e [tradução 
 
 ```r
 dbplyr::translate_sql(x ^ 2L)
-#> <SQL> POWER(`x`, 2)
+#&gt; &lt;SQL&gt; POWER(`x`, 2)
 
 dbplyr::translate_sql(log(x, 10))
-#> <SQL> LOG(10.0, `x`)
+#&gt; &lt;SQL&gt; LOG(10.0, `x`)
 ```
 
 ---
 # Dplyr
+
+.div-style1[
+&lt;img src="figures/logo_dplyr2.png" style="display: block; margin: auto;" /&gt;
+]
 
 Pacote do R com gramática para [manipulação de dados]()
 
@@ -263,21 +267,21 @@ class: inverse, center, middle
 # Dplyr
 
 ```r
-cnes %>%
-  select(def_atividad, def_turno_at, starts_with("mun_")) %>%
-  filter(def_atividad == "Unidade SEM atividade de Ensino") %>%
+cnes %&gt;%
+  select(def_atividad, def_turno_at, starts_with("mun_")) %&gt;%
+  filter(def_atividad == "Unidade SEM atividade de Ensino") %&gt;%
   mutate(
     so_um_turno = ifelse(grepl("SOMENTE", def_turno_at), 1, 0),
     localizacao = ifelse(mun_CAPITAL == "S", "CAPITAL", "INTERIOR")
-  ) %>%
-  group_by(localizacao) %>%
+  ) %&gt;%
+  group_by(localizacao) %&gt;%
   summarise(f_so_um_turno = sum(so_um_turno)*100/n())
   
-#> # A tibble: 2 x 2
-#>   localizacao f_so_um_turno
-#>   <chr>               <dbl>
-#> 1 CAPITAL              1.10
-#> 2 INTERIOR             1.80
+#&gt; # A tibble: 2 x 2
+#&gt;   localizacao f_so_um_turno
+#&gt;   &lt;chr&gt;               &lt;dbl&gt;
+#&gt; 1 CAPITAL              1.10
+#&gt; 2 INTERIOR             1.80
 ```
 
 ---
@@ -287,22 +291,22 @@ O processo é [*lazy*](), nunca puxa [dados para o R](), a menos que você os
 [solicite]() [explicitamente]() com [`dplyr::collect()`]().
 
 ```r
-*tbl(con, "cnes") %>%
-  select(def_atividad, def_turno_at, starts_with("mun_")) %>%
-  filter(def_atividad == "Unidade SEM atividade de Ensino") %>%
+*tbl(con, "cnes") %&gt;%
+  select(def_atividad, def_turno_at, starts_with("mun_")) %&gt;%
+  filter(def_atividad == "Unidade SEM atividade de Ensino") %&gt;%
   mutate(
     so_um_turno = ifelse(grepl("SOMENTE", def_turno_at), 1, 0),
     localizacao = ifelse(mun_CAPITAL == "S", "CAPITAL", "INTERIOR")
-  ) %>%
-  group_by(localizacao) %>%
-  summarise(f_so_um_turno = sum(so_um_turno)*100/n()) %>%
+  ) %&gt;%
+  group_by(localizacao) %&gt;%
+  summarise(f_so_um_turno = sum(so_um_turno)*100/n()) %&gt;%
 * collect()
 
-#> # A tibble: 2 x 2
-#>   localizacao f_so_um_turno
-#>   <chr>               <dbl>
-#> 1 CAPITAL              1.10
-#> 2 INTERIOR             1.80
+#&gt; # A tibble: 2 x 2
+#&gt;   localizacao f_so_um_turno
+#&gt;   &lt;chr&gt;               &lt;dbl&gt;
+#&gt; 1 CAPITAL              1.10
+#&gt; 2 INTERIOR             1.80
 ```
 
 ---
@@ -324,8 +328,8 @@ GROUP BY "localizacao"
 
 ```sql
 HashAggregate  (cost=4091.28..4091.33 rows=2 width=64)
-  Group Key: CASE WHEN (cnes."mun_CAPITAL" = 'S'::text) THEN 'CAPITAL'::text WHEN (cnes."mun_CAPITAL" <> 'S'::text) THEN 'INTERIOR'::text ELSE NULL::text END
-  ->  Seq Scan on cnes  (cost=0.00..3810.18 rows=22488 width=77)
+  Group Key: CASE WHEN (cnes."mun_CAPITAL" = 'S'::text) THEN 'CAPITAL'::text WHEN (cnes."mun_CAPITAL" &lt;&gt; 'S'::text) THEN 'INTERIOR'::text ELSE NULL::text END
+  -&gt;  Seq Scan on cnes  (cost=0.00..3810.18 rows=22488 width=77)
         Filter: (def_atividad = 'Unidade SEM atividade de Ensino'::text)
 ```
 
@@ -355,7 +359,7 @@ HashAggregate  (cost=4091.28..4091.33 rows=2 width=64)
 
 # Referências
 
-[Srivastava & Ngo, 2014](https://www.researchgate.net/publication/228710145_Statistical_Databases)
+[Srivastava &amp; Ngo, 2014](https://www.researchgate.net/publication/228710145_Statistical_Databases)
 
 [Wickham, 2019](https://dbplyr.tidyverse.org/articles/dbplyr.html)
 
@@ -363,7 +367,7 @@ HashAggregate  (cost=4091.28..4091.33 rows=2 width=64)
 
 [Executing R code in SQL Server](https://www.mssqltips.com/sqlservertip/4126/sql-server-2016-r-services-executing-r-code-in-sql-server/)
 
-[R, Databases & SQL](https://rdbsql.rsquaredacademy.com/dbplyr.html)
+[R, Databases &amp; SQL](https://rdbsql.rsquaredacademy.com/dbplyr.html)
 
 [SQL databases and R](https://datacarpentry.org/R-ecology-lesson/05-r-and-databases.html)
 
@@ -406,8 +410,112 @@ HashAggregate  (cost=4091.28..4091.33 rows=2 width=64)
 class: inverse, center, middle
 # Obrigada(o)!
 
-```{r image_grobs, fig.show = "hold", echo = FALSE, fig.align = "default", out.width="10%"}
-knitr::include_graphics("figures/emo_smilling_eyes.png")
-knitr::include_graphics("figures/emo_nerd_face.png")
-```
+&lt;img src="figures/emo_smilling_eyes.png" width="10%" /&gt;&lt;img src="figures/emo_nerd_face.png" width="10%" /&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
 
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

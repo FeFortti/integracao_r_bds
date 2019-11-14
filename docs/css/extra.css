@@ -1,0 +1,62 @@
+/*letters*/
+
+.large { font-size: 130% }
+.small { font-size: 70% }
+
+/*slides*/
+
+.div-style1 {
+  position: relative;
+  top: -30px;
+  left: 20px;
+}
+
+.div-style2 {
+  position: relative;
+  top: -10px;
+  left: -10px;
+}
+
+.div-style3 {
+  position: relative;
+  top: -40px;
+  left: 100px;
+}
+
+.div-style4 {
+  position: relative;
+  top: 40px;
+  left: -10px;
+}
+
+.div-style5 {
+  float: right;
+  position: relative;
+  top: -120px;
+  right: 10px;
+}
+
+/*slides*/
+.pull-left {
+  float: left;
+  width: 47%;
+}
+.pull-right {
+  float: right;
+  width: 47%;
+}
+
+/*plot*/
+.right-plot {
+  width: 60%;
+  float: right;
+  padding-left: 1%;
+}
+
+/*code*/
+.left-code {
+  color: #777;
+  width: 38%;
+  height: 92%;
+  float: left;
+}
