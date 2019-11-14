@@ -41,7 +41,7 @@ class: inverse, center, middle
     packages and libraries.*
                                         (Srivastava &amp; Ngo, 2014)
 
-.div-style3[
+.div-style1[
 &lt;img src="figures/logos_bds_relac2.png" style="display: block; margin: auto;" /&gt;
 ]
 
@@ -58,7 +58,7 @@ class: inverse, center, middle
     database: it will only be slower and more frustrating.*
                                                 (Wickham, 2019)
 
-.div-style4[                                          
+.div-style2[                                          
 &lt;img src="figures/logos_soft_estat2.png" style="display: block; margin: auto;" /&gt;
 ]
 
@@ -106,7 +106,7 @@ estatística]()?
    
    - [Comunidade ativa]()
    
-.div-style2[   
+.div-style3[   
 &lt;img src="figures/logo_r2.png" style="display: block; margin: auto;" /&gt;
 ]
 
@@ -115,8 +115,10 @@ estatística]()?
 con_postgres &lt;- RPostgres::dbConnect(
   RPostgres::Postgres(),
   dbname = "my_database",
-  host = "localhost", port = 54320,
-  user = "postgres", pwd
+  host = "localhost",
+  port = 54320,
+  user = "postgres",
+  pwd
 )
 ```
 
@@ -137,7 +139,7 @@ class: inverse
 
   - Aproveita-se do fato de que todo SGBDR tem suporte para conexões externas
 
-.div-style5[
+.div-style4[
 &lt;img src="figures/logos_bds_relac3.png" style="display: block; margin: auto;" /&gt;
 ]
 
@@ -192,7 +194,8 @@ Os argumentos para [`DBI::dbConnect()`]() variam de BDR para BDR, mas o
   - [`RMariaDB::MariaDB()`]() para `RMariaDB`*
   - [`bigrquery::bigquery()`]() para `BigQuery`
   
-.small[*Funciona de backend para [MariaDB e MySQL](); substituiu o pacote `RMySQL`]
+.small[*Funciona de _backend_ para [MariaDB e MySQL](); substituiu o pacote
+`RMySQL`]
 
 `SQLite` precisa de outro argumento: o caminho para o BDR. Porém, a [maioria
 dos BDRs]() não [está]() em um arquivo, mas sim [em outro servidor](). Isso faz
@@ -235,7 +238,7 @@ dbplyr::translate_sql(log(x, 10))
 ---
 # Dplyr
 
-.div-style1[
+.div-style5[
 &lt;img src="figures/logo_dplyr2.png" style="display: block; margin: auto;" /&gt;
 ]
 

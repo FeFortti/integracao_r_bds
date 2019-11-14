@@ -200,7 +200,7 @@ Os argumentos para [`DBI::dbConnect()`]() variam de BDR para BDR, mas o
   - [`RMariaDB::MariaDB()`]() para `RMariaDB`*
   - [`bigrquery::bigquery()`]() para `BigQuery`
   
-.small[*Funciona de backend para [MariaDB e MySQL](); substituiu o pacote
+.small[*Funciona de _backend_ para [MariaDB e MySQL](); substituiu o pacote
 `RMySQL`]
 
 `SQLite` precisa de outro argumento: o caminho para o BDR. Porém, a [maioria
