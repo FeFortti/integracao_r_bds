@@ -15,7 +15,10 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
-   sodipodi:docname="diagrama_novo.svg">
+   sodipodi:docname="diagrama.svg"
+   inkscape:export-filename="C:\Users\Fernanda\Desktop\mestrado_fsp_usp\disciplinas\2019_2semestre\MAC5861\trabalhos_em_grupo\projeto2\apresentacao\github\integracao_r_bds\docs\figures\diagrama.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96">
   <defs
      id="defs2">
     <marker
@@ -791,10 +794,10 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.62"
-     inkscape:cx="912.78131"
+     inkscape:cx="643.42647"
      inkscape:cy="330.40235"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1-5"
+     inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1920"
      inkscape:window-height="1001"
@@ -813,7 +816,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -834,13 +837,6 @@
            transform="rotate(-90,305.23739,-110.0219)"
            inkscape:label="Layer 1"
            id="layer1-5">
-          <circle
-             style="opacity:1;fill:#272822;fill-opacity:1;stroke:#f92672;stroke-width:2.534;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5532)"
-             id="path823"
-             cx="34.310062"
-             cy="-159.24353"
-             transform="rotate(90)"
-             r="30.076725" />
           <circle
              style="opacity:1;fill:#272822;fill-opacity:1;stroke:#f92672;stroke-width:2.534;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
              id="path823-3"
@@ -1021,19 +1017,7 @@
                  height="592"
                  width="120"
                  id="rect498" /></flowRegion><flowPara
-               id="flowPara500" /></flowRoot>          <text
-             transform="rotate(90)"
-             xml:space="preserve"
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45.47711182px;line-height:1.25;font-family:Arvo;-inkscape-font-specification:Arvo;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.13692784"
-             x="19.492313"
-             y="-155.06535"
-             id="text74-2-2"><tspan
-               sodipodi:role="line"
-               id="tspan72-7-3"
-               x="19.492313"
-               y="-155.06535"
-               style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:9.87777805px;font-family:Arvo;-inkscape-font-specification:'Arvo, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke-width:1.13692784">BDRs</tspan></text>
-          <flowRoot
+               id="flowPara500" /></flowRoot>          <flowRoot
              style="font-style:normal;font-weight:normal;font-size:5.33333349px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
              id="flowRoot5565"
              xml:space="preserve"><flowRegion
@@ -1103,8 +1087,37 @@
                d="m 159.24354,68.611846 c -0.73507,34.920054 0.6678,54.944484 0,0 z"
                style="fill:#f92672;fill-opacity:1;stroke:#f92672;stroke-width:2.85753822;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Send-0-6-5-5)" />
           </g>
-        </g>
+          <circle
+             style="opacity:1;fill:#272822;fill-opacity:1;stroke:#f92672;stroke-width:2.53399992;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             id="path823-3-9"
+             cx="34.31031"
+             cy="-159.64471"
+             r="30.076725"
+             transform="rotate(90)" />
+          <flowRoot
+             xml:space="preserve"
+             id="flowRoot5316"
+             style="fill:black;fill-opacity:1;stroke:none;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;letter-spacing:0px;word-spacing:0px"><flowRegion
+               id="flowRegion5318"><rect
+                 id="rect5320"
+                 width="275.80646"
+                 height="153.2258"
+                 x="-75.80645"
+                 y="104.99111" /></flowRegion><flowPara
+               id="flowPara5322"></flowPara></flowRoot>        </g>
       </g>
     </g>
+    <text
+       transform="translate(1.2806524,295.43663)"
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45.47711182px;line-height:1.25;font-family:Arvo;-inkscape-font-specification:Arvo;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.13692784"
+       x="19.492311"
+       y="-155.91885"
+       id="text74-2-2"><tspan
+         sodipodi:role="line"
+         id="tspan72-7-3"
+         x="19.492311"
+         y="-155.91885"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:9.87777805px;font-family:Arvo;-inkscape-font-specification:'Arvo, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke-width:1.13692784">BDRs</tspan></text>
   </g>
 </svg>

@@ -133,7 +133,7 @@ class: inverse
 # Diagrama
 
 ```{r, echo = FALSE, fig.align = "center"}
-knitr::include_graphics("figures/diagrama2.png")
+knitr::include_graphics("figures/diagrama.png")
 ```
 
 ---
